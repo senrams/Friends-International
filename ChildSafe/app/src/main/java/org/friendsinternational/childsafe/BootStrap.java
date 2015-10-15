@@ -5,6 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
 
 /**
@@ -23,5 +24,6 @@ public class BootStrap extends Application {
         // defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
         ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParsePush.subscribeInBackground("FIMessages");
     }
 }
