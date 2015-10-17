@@ -14,6 +14,7 @@ public class RegisterActivity extends BaseActivity {
 
     private View mRegisterForm;
     private View mProgressView;
+    private ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +22,20 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         mRegisterForm = findViewById(R.id.registration_form);
         mProgressView = findViewById(R.id.registration_progress);
+        currentUser = ParseUser.getCurrentUser();
+
         addOnClickListener(R.id.email_register_button, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showProgress(true, mRegisterForm, mProgressView);
                 boolean newUser = false;
-                ParseUser user  = ParseUser.getCurrentUser();
+                ParseUser user  = currentUser;
                 if (user == null) {
                     newUser = true;
                     user = new ParseUser();
                 }
                 user.setUsername(getValue(R.id.email));
-                user.setPassword(getValue(R.id.password));
+                if (newUser) user.setPassword(getValue(R.id.password));
                 user.setEmail(getValue(R.id.email));
 
                 user.put("firstName", getValue(R.id.edit_first_name));
@@ -63,16 +66,16 @@ public class RegisterActivity extends BaseActivity {
 
     private void completeOperation(ParseException e) {
         if (e == null) {
-            Toast.makeText(getBaseContext(), "User registered sunccessfully", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getBaseContext(), "User registered/updated sunccessfully", Toast.LENGTH_LONG).show();
+            finish();
+            startActivity(MainActivity.class);
         } else {
-            Toast.makeText(getBaseContext(), "User registration failed." + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "User registration/update failed." + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         }
         showProgress(false, mRegisterForm, mProgressView);
     }
 
     private void prepopulate() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser!=null) {
             setText(R.id.email, currentUser.getEmail());
             setText(R.id.edit_first_name, (String) currentUser.get("firstName"));

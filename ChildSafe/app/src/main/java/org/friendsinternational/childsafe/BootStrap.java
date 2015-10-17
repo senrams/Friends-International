@@ -18,7 +18,7 @@ public class BootStrap extends Application {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "xpV5UgBrdVPchdAajTLuUgZACj1WrlqTzG2hF9t9", "KHzUlgka1NXy76bjsR9zdulnMfdccqIeZ82ixbR4");
-        ParseUser.enableAutomaticUser();
+        ParseUser.enableRevocableSessionInBackground();
         ParseACL defaultACL = new ParseACL();
         // Optionally enable public read access.
         // defaultACL.setPublicReadAccess(true);

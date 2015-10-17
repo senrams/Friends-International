@@ -24,6 +24,7 @@ public class MainActivity extends BaseActivity
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
             startActivity(LoginActivity.class);
+            finish();
         }
         else {
             ParseAnalytics.trackAppOpenedInBackground(getIntent());
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-            setText(R.id.welcome_msg,"Welcome "+currentUser.get("lastName"));
+            setText(R.id.welcome_msg,"Welcome "+currentUser.get("firstName")+" "+currentUser.get("lastName"));
         }
     }
 
@@ -105,6 +106,10 @@ public class MainActivity extends BaseActivity
             startActivity(PublishActivity.class);
         } else if (id == R.id.nav_edit_profile) {
             startActivity(RegisterActivity.class);
+        }
+        else if (id==R.id.nav_logout) {
+            ParseUser.logOut();
+            finish();
         }
 
 
